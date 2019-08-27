@@ -26,20 +26,18 @@ function lookup(Name, value) {
     }
   ];
 
-  for(var i = 0; i < contacts.length; ++i){
-      var obj = contacts[i];
-      if(obj.firstName === Name){
-          if(obj[value] !== undefined){
-              return obj[value];
-          }
-          else{
-            return("Property Not Found");
-          }
+  for (var i = 0; i < contacts.length; ++i) {
+    var obj = contacts[i];
+    if (obj.firstName === Name) {
+      if (obj[value] !== undefined) {
+        return obj[value];
+      } else {
+        return "Property Not Found";
       }
+    }
   }
 
-  return("Not Contact Found");
-
+  return "Not Contact Found";
 }
 
 console.log(lookup("Abhishekh", "likes"));

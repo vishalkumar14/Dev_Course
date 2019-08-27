@@ -1,3 +1,6 @@
+
+// Javscript is a Dynamically Typed language
+
 /*Boolean
 
     boolean are use for representing true or false of something
@@ -22,7 +25,6 @@ sum.toFixed(); // 0
 sum.toFixed(1); // 0.3
 sum.toFixed(2); // 0.30
 
-
 /* Undefined
 
     A variable that hasn’t been assigned a value yet, or 
@@ -31,7 +33,7 @@ sum.toFixed(2); // 0.30
 
 */
 
-var a; 
+var c;
 
 /* NULL
 
@@ -40,5 +42,14 @@ var a;
 
 */
 
-let b = null;
+let d = null;
 
+/* String
+
+    Javascript support string in Single quote or Double quote
+    Javscript does not support Characters type
+
+*/
+
+var str = "How 's is the day"; // "\" is used as a escape sequence
+console.log(str);
