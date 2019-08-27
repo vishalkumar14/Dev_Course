@@ -1,0 +1,15 @@
+{
+  "name": "Lecture_1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "FizzBuzz.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "makeFolder": "Mk_dir_Creater.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
