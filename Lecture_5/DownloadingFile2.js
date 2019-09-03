@@ -29,8 +29,8 @@ function compressFile(filePath, compressed) {
 
   setTimeout(function() {
     var compressedPath = compressed(path, filePath);
-
     uploadFile(compressedPath, uploaded);
+
   }, 3000);
 }
 
@@ -55,6 +55,7 @@ function uploadFile(diskPath, uploaded) {
 
   setTimeout(function() {
     uploaded(path, diskPath);
+    console.log("Task Completed");
   }, 3000);
 }
 
