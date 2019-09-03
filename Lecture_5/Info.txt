@@ -1,0 +1,5 @@
+WebAPI
+Message Queue
+Event Loop
+Closure
+Immediatly function invoking
