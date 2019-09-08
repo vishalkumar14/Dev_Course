@@ -1,0 +1,22 @@
+Network Address Translation.
+
+NAT stands for Network Address Translation.
+
+NAT is a technology that is embedded into network routing devices such as home DSL boxes, firewalls, switches and routers.
+
+A NAT is usually placed between a private  network (LAN – Local Area Network) and the public network (The Internet).
+
+Due to the lack of IP address space and the need to keep a private network’s architecture unknown to external users, NATs are used. 
+These translate internal private IP addresses to external public IP addresses.
+
+Incoming traffic into the private network is routed through a public address binding that occurs on the NAT device. 
+This binding is created when an internal machine with a private IP address tries to access a public IP address (through the NAT).
+
+Not all NAT devices are created equal – they behave differently to traffic coming to private addresses 
+from different external addresses than the original one.
+
+VoIP (and WebRTC) need to be able to pass media between two peers that might both be behind NAT devices. 
+It also requires external packets to be able to pass to the internal network. 
+This requires mechanisms known as NAT Traversal to be used.
+
+

@@ -1,0 +1,13 @@
+Client Req --> DNS(for resolving domain name to IP Addrs) --> Based on this IP Address request goes to Actual Server of Google
+
+Request Method ----> GET, POST, PATCH, DELETE
+
+GET --> Request Some data from server(e.g HTMLS Files)
+POST --> Sending Data Data to Server(e.g submitting Forms)
+
+Response Codes ----> 404(Not Found) etc
+
+Server Gives us answer in the form of Codes
+
+JSON ---> Method or Way to Store Data in the form of Javscript Objects
+
