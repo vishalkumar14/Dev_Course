@@ -1,0 +1,16 @@
+{
+  "name": "Lecture-9",
+  "version": "1.0.0",
+  "description": "",
+  "main": "StartingNode.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "mymkdir": "StartingNode.js",
+    "myipconfig": "myipconfig.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

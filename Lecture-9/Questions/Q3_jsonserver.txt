@@ -1,0 +1,1 @@
+Que read Json data from data.json file and stream it on browser using  nodes HTTP module? 

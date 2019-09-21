@@ -1,0 +1,1 @@
+Que stream a static HTML page on browser using  nodes HTTP module? 
