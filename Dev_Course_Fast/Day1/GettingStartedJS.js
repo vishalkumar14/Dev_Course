@@ -1,0 +1,12 @@
+var arr = [1,2,3,4,5];
+console.log(arr[1]);
+console.log(arr.length);
+let p = "1";
+arr.p = 14;
+console.log(arr);
+console.log(arr[p]);
+console.log(arr.p);
+console.log(arr.length);
+arr["6"] = "Hey";
+console.log(arr);
+console.log(arr.length);

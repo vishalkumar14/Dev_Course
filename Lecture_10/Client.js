@@ -18,6 +18,22 @@ reader.question("Whats Your Name\n", function(name){
 });
 
 reader.on("line", function(data) {
+
+let sarr = data.split(" ");
+
+let kind = sarr[0];
+
+let message = [];
+
+if(kind === "private"){
+
+    let reciever = sarr[1];
+    message.data = `${username} : ${sarr.slice(2).join(" ")}`;
+    message.kind = "private";
+    
+
+}
+
   socket.emit("UserMessage", data);
 });
 
