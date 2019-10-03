@@ -1,27 +1,37 @@
-var fs = require("fs");
-var http = require("http");
+const fs = require("fs");
+const http = require("http");
 var modify = require("./functionality/modify");
-var url = require("url");
+var CardFiller = require("./functionality/Listing");
+const url = require("url");
 
-var server = http.createServer();
-
-var server = http.createServer(function(req, res) {
-  var parseurl = url.parse(req.url, true);
+const server = http.createServer(function(req, res) {
+  const data = JSON.parse(fs.readFileSync("data.json"));
+  const parseurl = url.parse(req.url, true);
+  res.writeHead(200, { "Content-type": "text/html" });
 
   if (parseurl.pathname === "/api") {
-    res.writeHead(200, { "Content-type": "text/html" });
-
-    var data = JSON.parse(fs.readFileSync("data.json"));
     var file = "" + fs.readFileSync("./templates/product.html");
-
     var modifyfile = modify(data[parseurl.query.id], file);
     res.write(modifyfile);
-  } else if (req.url === "/product") {
-    res.write("You are at product page ");
-  } else if (req.url === "/overview" || req.url === "/" || req.url === "") {
-    res.write("You are at Home Page");
+  } else if (parseurl.pathname === "/product") {
+    var file = "" + fs.readFileSync("./templates/product.html");
+    var modifyfile = modify(data[parseurl.query.id], file);
+    res.write(modifyfile);
+  } else if (parseurl.pathname === "/overview") {
+    var CardData = "" + fs.readFileSync("./templates/Card.html");
+
+    var OverviewData = "" + fs.readFileSync("./templates/overview.html");
+
+    var CardDetails = CardFiller(data, CardData);
+
+    OverviewData = OverviewData.replace(/{CardContent}/g, CardDetails);
+
+    res.write(OverviewData);
+  } else if (parseurl.pathname === "/" || parseurl.pathname === "") {
+    const HomeTitle = fs.readFileSync("./templates/Home.html");
+    res.write(HomeTitle);
   } else {
-    res.write("error 404 Page not found");
+    res.write("<h1>Error 404 Page Not Found</h1>");
   }
 
   res.end();
