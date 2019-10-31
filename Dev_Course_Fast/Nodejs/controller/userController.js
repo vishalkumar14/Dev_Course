@@ -1,85 +1,99 @@
-const fs = require("fs");
-var users = JSON.parse(fs.readFileSync("./data/user.json"));
+const userModel = require("../model/userModel");
 
-module.exports.getAllUsers = (req, res, next) => {
-  res.status(200).json(users);
+module.exports.getAllUsers = async (req, res, next) => {
+  try {
+    const allUser = await userModel.find();
+    res.status(200).json({
+      success: "All Users are found",
+      data: allUser
+    });
+  } catch (err) {
+    res.status(401).json({
+      success: "Users are not found"
+    });
+  }
 };
 
-module.exports.getUser = (req, res, next) => {
-  let idx = Number(req.params["id"]) - 1;
-  let User = users[idx];
-  res.status(200).json(User);
+module.exports.getUser = async (req, res, next) => {
+  try {
+    const user = await userModel.findById(req.params["id"]);
+    res.status(200).json({
+      success: "User is Found",
+      data: user
+    });
+  } catch (err) {
+    res.status(401).json({
+      success: "User is not Found"
+    });
+  }
 };
 
-module.exports.checkInput = function(req, res, next) {
+module.exports.checkInput = async (req, res, next) => {
   if (req.body) {
-    if (req.body.name) {
+    if (req.body.name && req.body.userName) {
       next();
     } else {
       return res.status(400).json({
         status: "failed",
-        response: "You should enter some details to create a user"
+        response: "Fill the Required Fields"
       });
     }
   } else {
     return res.status(400).json({
       status: "failed",
-      response: "You should enter some details to create a user"
+      response: "Fill the Required Fields"
     });
   }
 };
 
-module.exports.createUser = (req, res, next) => {
-  const id = users.length + 1;
-  const NewUser = req.body;
-  NewUser.id = id;
-
-  users.push(NewUser);
-
-  fs.writeFileSync("./data/user.json", JSON.stringify(users));
-  res.status(200).json({
-    success: "A Empty User is Created"
-  });
-};
-
-module.exports.updateUser = (req, res, next) => {
-  let idx = Number(req.params["id"]) - 1;
-
-  if (idx < users.length) {
-    let User = users[idx];
-
-    var obj = req.body;
-    var keys = Object.keys(obj);
-
-    for (let i = 0; i < keys.length; ++i) {
-      users[idx][keys[i]] = obj[keys[i]];
-    }
-
-    fs.writeFileSync("./data/user.json", JSON.stringify(users));
+module.exports.createUser = async (req, res, next) => {
+  try {
+    const user = await userModel.create(req.body);
     res.status(200).json({
-      success: "A Empty User is Created",
-      data: users[idx]
-    });
-  } else {
-    res.status(404).json({
-      success: "Error"
-    });
-  }
-};
-
-module.exports.deleteUser = (req, res, next) => {
-  let idx = Number(req.params["id"]) - 1;
-
-  if (idx < users.length) {
-    let user = users[idx];
-    fs.writeFileSync("./data/user.json", JSON.stringify(users));
-    res.status(200).json({
-      success: "User Data is Remvoed",
+      success: "User is Created",
       data: user
     });
-  } else {
-    res.status(404).json({
-      success: "User Not Found"
+  } catch (err) {
+    res.status(401).json({
+      success: "User Could not be Created"
     });
-  }
+  };
+};
+
+module.exports.updateUser = async (req, res, next) => {
+  userModel.findOneAndUpdate(
+    { _id: { $eq: req.params["id"] } },
+    req.body,
+    { new: true, upsert: false },
+    function(err, doc) {
+      if (err) {
+        res.status(404).json({
+          success: "Error, ID is Invaild"
+        });
+      } else {
+        res.status(200).json({
+          success: "User is Updated",
+          data: doc
+        });
+      }
+    }
+  );
+};
+
+module.exports.deleteUser = async (req, res, next) => {
+  userModel.findOneAndDelete(
+    { _id: { $eq: req.params["id"] } },
+    function(err, doc) {
+      if (err) {
+        res.status(404).json({
+          success: "Error, ID is Invaild"
+        });
+      } else {
+        res.status(200).json({
+          success: "User is Removed",
+          data: doc
+        });
+      }
+    }
+  );
 };

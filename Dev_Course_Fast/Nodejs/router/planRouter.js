@@ -5,13 +5,16 @@ const {
   createPlan,
   getPlan,
   updatePlan,
-  deletePlan
+  deletePlan,
+  addqueryParams
 } = require("../controller/planController");
 
 planRouter
   .route("")
   .get(getAllPlans)
   .post(createPlan);
+
+planRouter.route("/best-5-plans").get(addqueryParams, getAllPlans);
 
 planRouter
   .route("/:id")

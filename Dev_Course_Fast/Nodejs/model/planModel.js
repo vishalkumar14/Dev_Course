@@ -7,19 +7,22 @@ mongoose
   .connect(DB, {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
   })
   .then(function(conn) {
-    console.log(conn.connection);
+    console.log("DB(Plan) is Connected");
   });
 
 const planSchema = new mongoose.Schema({
-  name: { type: String, required: ["Name is a Required Field"] },
-  price: { type: Number, min: 20 },
-  description: { type: String, required:["Description is a Required Field"] },
-  averagerating: Number,
-  duration: { type: Date }
+  name: { type: String, required: [true, "Name is a Required Field"] },
+  price: { type: Number, min: 20, default: 0 },
+  description: { type: String, required: true },
+  averagerating: { type: Number, default: 0 },
+  duration: { type: Date, default: Date.now }
 });
 
 const planModel = mongoose.model("planModel", planSchema);
 module.exports = planModel;
+
+//http://localhost:3000/api/plan?price[gt]=200&averagerating[gte]=4

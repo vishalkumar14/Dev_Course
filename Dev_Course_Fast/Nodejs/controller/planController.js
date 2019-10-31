@@ -1,64 +1,131 @@
-const fs = require("fs");
 const planModel = require("../model/planModel");
 
-module.exports.getAllPlans = (req, res, next) => {
-  res.status(200).json(plans);
-};
+module.exports.addqueryParams = async (req, res, next) => {
+  req.query.sort = '-averagerating';
+  req.query.limit = '5';
+  req.query.price =  { gt: '300' };
+  req.query.select="name%price%averagerating";
+  next();
+}
 
-module.exports.getPlan = (req, res, next) => {
-  let idx = Number(req.params["id"]) - 1;
-  if (idx < plans.length) {
-    let Plan = plans[idx];
-    res.status(200).json(Plan);
-  } else {
-    res.status(404).json({
-      success: "Plan Not Found"
-    });
-  }
-};
+module.exports.getAllPlans = async (req, res, next) => {
+  try {
+    let wholeQuery = { ...req.query };
 
-module.exports.createPlan = (req, res, next) => {
+    // localhost:3000/api/plan?duration[gt]=7&sort=averagerating&select=name%duration&page=2&limit=4
 
-  const plan = await planModel.create(req.body);
-  
-  res.status(200).json({
-    success: "A Plan is Created"
-  });
-  
-};
+    //http://localhost:3000/api/plan?price[gt]=200&averagerating[gte]=2&sort=averagerating&select=name%price%averagerating&skip=5
 
-module.exports.updatePlan = (req, res, next) => {
-  let idx = Number(req.params["id"]) - 1;
-  if (idx < plans.length) {
-    var obj = req.body;
-    var keys = Object.keys(obj);
-    for (let i = 0; i < keys.length; ++i) {
-      plans[idx][keys[i]] = obj[keys[i]];
+    let excludeQuery = ["select", "sort", "limit", "page"];
+    for (let i = 0; i < excludeQuery.length; ++i) {
+      delete wholeQuery[excludeQuery[i]];
     }
-    fs.writeFileSync("./data/plan.json", JSON.stringify(plans));
-    res.status(200).json({
-      success: "A Plan is Updated",
-      data: plans[idx]
+
+    let stringQuery = JSON.stringify(wholeQuery);
+    stringQuery = stringQuery.replace(/gt|lt|lte|gte/g, function(match) {
+      return "$" + match;
     });
-  } else {
-    res.status(404).json({
-      success: "Error"
+
+    let Query = JSON.parse(stringQuery);
+
+    const page = Number(req.query.page || 1);
+    const limit = Number(req.query.limit || 4);
+    const tpSkip = limit * (page - 1);
+
+    let allPlan = planModel
+      .find(Query)
+      .skip(tpSkip)
+      .limit(limit);
+
+    if (req.query.sort) {
+      allPlan = allPlan.sort(req.query.sort);
+    }
+
+    if (req.query.select) {
+      let selectingCriteria = req.query.select.split("%").join(" ");
+      allPlan = allPlan.select(selectingCriteria);
+    }
+
+    let FinalResult = await allPlan;
+
+    console.log(allPlan);
+
+    res.status(200).json({
+      success: "All Plan Send",
+      data: FinalResult
+    });
+  } catch (err) {
+    res.status(401).json({
+      success: "No Plan Send",
+      data: err
     });
   }
 };
 
-module.exports.deletePlan = (req, res, next) => {
-  let idx = Number(req.params["id"]) - 1;
-  if (idx < plans.length) {
-    let plan = plans[idx];
-    fs.writeFileSync("./data/plan.json", JSON.stringify(plans));
+module.exports.getPlan = async (req, res, next) => {
+  try {
+    const plan = await planModel.findById(req.params["id"]);
     res.status(200).json({
-      success: "Plan is Remvoed",
+      success: "Get Plan",
       data: plan
     });
-  } else {
-    res.status(404).json({
-      success: "Plan Not Found"
+  } catch (err) {
+    res.status(401).json({
+      success: "Plan Could not be get",
+      data: err
     });
   }
+};
+
+module.exports.createPlan = async (req, res, next) => {
+  try {
+    const plan = await planModel.create(req.body);
+    res.status(200).json({
+      success: "A Plan is Created",
+      data: plan
+    });
+  } catch (err) {
+    res.status(401).json({
+      success: "Plan Could not be Created",
+      data: err
+    });
+  }
+};
+
+module.exports.updatePlan = async (req, res, next) => {
+  planModel.findOneAndUpdate(
+    { _id: { $eq: req.params["id"] } },
+    req.body,
+    { new: true, upsert: false },
+    function(err, doc) {
+      if (err) {
+        res.status(404).json({
+          success: "Error, ID is Invaild"
+        });
+      } else {
+        res.status(200).json({
+          success: "A Plan is Updated or Created",
+          data: doc
+        });
+      }
+    }
+  );
+};
+
+module.exports.deletePlan = async (req, res, next) => {
+  planModel.findOneAndDelete({ _id: { $eq: req.params["id"] } }, function(
+    err,
+    doc
+  ) {
+    if (err) {
+      res.status(404).json({
+        success: "Error, ID is Invaild"
+      });
+    } else {
+      res.status(200).json({
+        success: "A Plan is Removed",
+        data: doc
+      });
+    }
+  });
 };
