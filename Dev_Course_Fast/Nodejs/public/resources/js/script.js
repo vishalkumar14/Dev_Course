@@ -35,22 +35,18 @@ $(document).ready(function() {
     { offset: "50%" }
   );
 
-
-  $(".js--nav-icon").click(function(){
+  $(".js--nav-icon").click(function() {
     const nav = $(".js--main-nav");
     const icon = $(".js--nav-icon i");
 
     nav.slideToggle(200);
 
-    if(icon.hasClass("ion-navicon-round")){
+    if (icon.hasClass("ion-navicon-round")) {
       icon.addClass("ion-close-round");
       icon.removeClass("ion-navicon-round");
-    }
-
-    else{
+    } else {
       icon.addClass("ion-navicon-round");
       icon.removeClass("ion-close-round");
     }
-
-  })
+  });
 });
