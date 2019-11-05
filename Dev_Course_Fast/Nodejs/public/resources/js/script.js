@@ -10,6 +10,29 @@ $(document).ready(function() {
     { offset: "60px" }
   );
 
+  $(".productsection").waypoint(
+    function(direction) {
+      if (direction === "down") {
+        $("nav").addClass("animated fadeIn");
+        $("nav").addClass("sticky");
+      } else {
+        $("nav").removeClass("sticky");
+      }
+    },
+    { offset: "0px" }
+  );
+  $(".section-plans").waypoint(
+    function(direction) {
+      if (direction === "down") {
+        $("nav").addClass("animated fadeIn");
+        $("nav").addClass("sticky");
+      } else {
+        $("nav").removeClass("sticky");
+      }
+    },
+    { offset: "0px" }
+  );
+
   $(".js--wp-1").waypoint(
     function(direction) {
       $(".js--wp-1").addClass("animated fadeIn");

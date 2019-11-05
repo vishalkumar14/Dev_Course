@@ -13,13 +13,24 @@ mongoose
   .then(function(conn) {
     console.log("DB(Plan) is Connected");
   });
+/*
+ 
+  {
+    "packageType": "Premium",
+    "price": 250,
+    "mealFreq": "1 meal 10 days/month",
+    "OrderType": "Order 24/7",
+    "access": true
+  }
+
+  */
 
 const planSchema = new mongoose.Schema({
-  name: { type: String, required: [true, "Name is a Required Field"] },
-  price: { type: Number, min: 20, default: 0 },
-  description: { type: String, required: true },
-  averagerating: { type: Number, default: 0 },
-  duration: { type: Date, default: Date.now }
+  packageType: { type: String, required: true },
+  price: { type: Number, min: 1, default: 0, required: true },
+  mealFreq: { type: String, required: true, minlength: 6 },
+  OrderType: { type: String, required: true, minlength: 10 },
+  access: { type: Boolean, default: false, require: true }
 });
 
 const planModel = mongoose.model("planModel", planSchema);

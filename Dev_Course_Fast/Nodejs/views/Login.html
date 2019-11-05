@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="./resources/css/style.css">
     <link rel="stylesheet" href="./resources/css/queries.css">
     <link href="https://fonts.googleapis.com/css?family=Lato:100,300,300i,400&amp;display=swap" rel="stylesheet">
-    <title>OmniFood</title>
+    <title></title>
     <link rel="apple-touch-icon" sizes="180x180" href="./resources/favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="16x16" href="./resources/favicons/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="./resources/favicons/favicon-32x32.png">
@@ -23,14 +23,14 @@
     <meta name="theme-color" content="#ffffff">
   </head>
   <body>
-    <nav>
+    <nav class="navbar">
       <div class="row"><a href="/#main-home"><img class="logo" src="./Omnifood Contents/logo-white.png" alt="OmniFood Logo"></a><a href="/#main-home"><img class="logo-black" src="./Omnifood Contents/logo.png" alt="OmniFood Logo">
           <ul class="main-nav js--main-nav">
             <li><a href="/#feature">Food Delivery</a></li>
             <li><a href="/#steps">How it Works</a></li>
             <li><a href="/#cities">Out Cities</a></li>
-            <li><a href="/signUp">Sign Up</a></li>
-            <li><a href="/logIn">Login</a></li>
+            <li><a href="/signup">Sign Up</a></li>
+            <li><a href="/login">Login</a></li>
           </ul><a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a></a></div>
     </nav>
     <section class="section-login" id="form">
@@ -38,7 +38,7 @@
         <h2>Login</h2>
       </div>
       <div class="row">
-        <form class="login-form" method="POST" action="#">
+        <form class="login-form" method="POST" action="/api/user/login">
           <div class="row login-field">
             <div class="col span-3-of-3">
               <label for="uname">Username</label>
@@ -55,11 +55,22 @@
               <input id="pass" type="password" name="password" placeholder="Enter Password" minlength="8" required="">
             </div>
           </div>
-          <div class="row">
+          <div class="row login-field">
+            <div class="forgetRemember">
+              <div class="flexItem">
+                <input type="checkbox" name="remember" id="remember" checked>Remember me
+              </div>
+              <div class="flexItem"><a href="/forgetPassword">Forget Password?</a></div>
+            </div>
+          </div>
+          <div class="row login-field">
             <div class="col span-1-of-2"></div>
             <div class="col span-2-of-2">
               <input type="submit" value="Login">
             </div>
+          </div>
+          <div class="row login-field">
+            <div class="col span-1-of-2"><span>Don't have an acount? </span><a href="/signup">&nbsp; SignUp </a></div>
           </div>
         </form>
       </div>
@@ -89,9 +100,9 @@
       </div>
     </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="//cdn.jsdelivr.net/respond/1.4.2/respond.min.js"></script>
-    <script src="//cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="//cdn.jsdelivr.net/selectivizr/1.0.3b/selectivizr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/respond/1.4.2/respond.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/selectivizr/1.0.3b/selectivizr.min.js"></script>
     <script src="./resources/js/script.js"></script>
     <script src="./vendors/js/jquery.waypoints.min.js"></script>
   </body>

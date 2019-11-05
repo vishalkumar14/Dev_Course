@@ -6,18 +6,31 @@ const {
   createUser,
   getUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  updatePassword
 } = require("../controller/userController");
+
+const {
+  signup,
+  login,
+  protectroute,
+  isAuthorised
+} = require("../controller/authController");
+
+userRouter.route("/signup").post(signup);
+userRouter.route("/login").post(login);
 
 userRouter
   .route("")
-  .get(getAllUsers)
-  .post(checkInput, createUser);
+  .get(protectroute, isAuthorised(["admin"]), getAllUsers)
+  .post(protectroute, checkInput, createUser);
+
+userRouter.route("/updatePassword").patch(protectroute, updatePassword);
 
 userRouter
   .route("/:id")
-  .get(getUser)
-  .patch(updateUser)
-  .delete(deleteUser);
+  .get(protectroute, getUser)
+  .patch(protectroute, updateUser)
+  .delete(protectroute, deleteUser);
 
 module.exports = userRouter;

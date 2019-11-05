@@ -4,5 +4,5 @@ block mainBlock
         .row
             h2 Start eating healthy today
         .row.plans-card
-            each plan in plans
-                include plan.pug
+            for plan in plans    
+                include plan

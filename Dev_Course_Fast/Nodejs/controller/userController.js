@@ -57,12 +57,12 @@ module.exports.createUser = async (req, res, next) => {
     res.status(401).json({
       success: "User Could not be Created"
     });
-  };
+  }
 };
 
 module.exports.updateUser = async (req, res, next) => {
   userModel.findOneAndUpdate(
-    { _id: { $eq: req.params["id"] } },
+    { _id: { $eq: req.decoded } },
     req.body,
     { new: true, upsert: false },
     function(err, doc) {
@@ -80,20 +80,40 @@ module.exports.updateUser = async (req, res, next) => {
   );
 };
 
-module.exports.deleteUser = async (req, res, next) => {
-  userModel.findOneAndDelete(
-    { _id: { $eq: req.params["id"] } },
-    function(err, doc) {
-      if (err) {
-        res.status(404).json({
-          success: "Error, ID is Invaild"
-        });
-      } else {
-        res.status(200).json({
-          success: "User is Removed",
-          data: doc
-        });
-      }
+module.exports.updatePassword = async (req, res, next) => {
+  if (req.body.oldpassword === req.user.password) {
+    if (req.body.newpassword === req.body.newpasswordconfirm) {
+      userModel.findOneAndUpdate(
+        { _id: { $eq: req.decoded } },
+        { password: req.body.newpassword },
+        { new: true, upsert: false }
+      );
+    } else {
+      req.status(401).json({
+        data: "Password not matched"
+      });
     }
-  );
+  } else {
+    req.status(401).json({
+      data: "Password not matched"
+    });
+  }
+};
+
+module.exports.deleteUser = async (req, res, next) => {
+  userModel.findOneAndDelete({ _id: { $eq: req.params["id"] } }, function(
+    err,
+    doc
+  ) {
+    if (err) {
+      res.status(404).json({
+        success: "Error, ID is Invaild"
+      });
+    } else {
+      res.status(200).json({
+        success: "User is Removed",
+        data: doc
+      });
+    }
+  });
 };

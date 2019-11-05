@@ -1,23 +1,36 @@
 .col.span-1-of-3.PlanCard
     .plan-box.js--wp-4
         div
-            h3 Premium
-            p.plan-price $300 
+            h3 Punjabi Tadka Special
+            p.plan-price $#{plan.price} 
                 span /month
-            p.plan-price-meal That's only 13.30$ per meal
+            if plan.packageType !== "Starter"
+                p.plan-price-meal That's only #{plan.price}$ per meal
+            else
+                p.plan-price-meal &nbsp;
         div
             ul
                 li
                     i.ion-ios-checkmark-empty.icon-small 
-                    | 1 meal every day
+                    | <em> #{plan.packageType}</em>
                 li
                     i.ion-ios-checkmark-empty.icon-small 
-                    | Order 24/7
+                    | #{plan.mealFreq}
                 li
                     i.ion-ios-checkmark-empty.icon-small 
-                    | Access to newest creations
+                    | #{plan.OrderType}
+
+                if plan.access
+                    li
+                        i.ion-ios-checkmark-empty.icon-small 
+                        | Access to newest creations
+                else
+                    li
+                        i.ion-ios-close-empty.icon-small      
+
                 li
                     i.ion-ios-checkmark-empty.icon-small 
                     | Free Delivery
+
         div
-            a.btn.btn-full(href="/logIn") Sign Up Now
+            a.btn.btn-full(href="/productPage") Details

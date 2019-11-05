@@ -40,7 +40,7 @@ body {
    he aa pa rhe the ek line main ,,,, teen plans ko laane ke liye predefined margin jo ki grid.ss main de
    rkha hai usko kam kerna pda
 */
-.PlanCard{
+.PlanCard {
   width: 31.735%;
   margin-left: 0%;
 }
@@ -227,10 +227,10 @@ header {
 }
 
 body .logo-black {
-  height: 100px;
+  height: 60px;
   width: auto;
   float: left;
-  margin-top: 20px;
+  margin-top: 4px;
   margin-bottom: 4px;
 }
 
@@ -256,12 +256,26 @@ header .logo-black {
 
 /* Main Navigation */
 
-.main-nav {
+.navbar{
+  position: sticky;
+}
+
+body .main-nav {
+  float: right;
+  list-style: none;
+  margin: 22px 0;
+}
+body .main-nav li {
+  display: inline-block;
+  margin-left: 40px;
+}
+
+header .main-nav {
   float: right;
   list-style: none;
   margin-top: 55px;
 }
-.main-nav li {
+header .main-nav li {
   display: inline-block;
   margin-left: 40px;
 }
@@ -302,7 +316,13 @@ header .main-nav li a:active {
 
 /* Mobile Navigation */
 
-.mobile-nav-icon {
+body .mobile-nav-icon {
+  float: right;
+  margin-top: 16px;
+  cursor: pointer;
+  display: none;
+}
+header .mobile-nav-icon {
   float: right;
   margin-top: 30px;
   cursor: pointer;
@@ -719,6 +739,12 @@ textarea {
   border: 1px solid #ccc;
 }
 
+/* <-------------------------- All Plan Section --------------------------> */
+
+#plans{
+  padding-top: 5%;
+}
+
 /* <-------------------------- Login Section --------------------------> */
 
 .login-form {
@@ -732,4 +758,97 @@ textarea {
 
 .login-field label {
   margin: 11px;
+}
+
+.flexItem {
+  margin: 0px 0px 0px 11px;
+}
+
+.forgetRemember {
+  display: flex;
+  justify-content: space-between;
+}
+
+.login-field a {
+  border: none;
+}
+
+/* <-------------------------- Product Home Section --------------------------> */
+
+.product-home {
+  clip-path: polygon(0 0, 100% 0%, 100% 82%, 0% 100%);
+}
+
+product-background{
+  background-color: rgb(199, 198, 198);
+}
+
+.ProductName {
+  font-size: 270%;
+}
+.productTextBox {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  line-height: 1.7;
+}
+.ProductTextContainer {
+  color: #2ecc71;
+  margin: 0 auto;
+  font-size: 130%;
+}
+
+.ProductText {
+  display: flex;
+  justify-content: space-between;
+}
+
+.featurelist ul {
+  list-style: none;
+}
+
+.aboutPlan {
+  display: flex;
+}
+
+.PriceandAbout,
+.FeaturesText {
+  width: 50%;
+}
+
+.FeaturesText {
+  display: flex;
+  flex-direction: column;
+}
+
+.feature {
+  margin-bottom: 8%;
+}
+
+.feature ul li {
+  margin-bottom: 5%;
+}
+
+.featurelist i{
+  font-size: 170%;
+}
+
+.productsubHeading {
+  margin-bottom: 10%;
+  font-size: 120%;
+}
+
+.Price{
+  font-size: 150%;
+}
+
+.Buy {
+  text-align: center;
+  margin-top: 7%;
+}
+
+.buy-btn{
+  font-size: 133%;
 }
