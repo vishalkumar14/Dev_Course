@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
+const crypto = require("crypto");
+
 const DB =
   "mongodb+srv://vishalipu14:vishalkumar@cluster0-pjy0l.mongodb.net/test?retryWrites=true&w=majority";
 
@@ -25,7 +28,12 @@ const userSchema = new mongoose.Schema({
     enum: ["admin", "restrautantOwner", "user", "deliveryBoy"],
     default: "user"
   },
-  email: { type: String, required: [true], unique: true },
+  email: {
+    type: String,
+    required: [true],
+    unique: true,
+    validate: validator.isEmail
+  },
   uname: { type: String, required: [true], unique: true },
   password: { type: String, required: [true] },
   confirmpassword: {
@@ -37,11 +45,18 @@ const userSchema = new mongoose.Schema({
       },
       message: "Password does not matched"
     }
-  }
+  },
+  token: { type: String }
 });
 
 userSchema.pre("save", function() {
   this.confirmpassword = undefined;
+});
+
+userSchema.method("generateToken", function() {
+  const token = crypto.randomBytes(32).toString("hex");
+  this.token = token;
+  return this.token;
 });
 
 const userModel = mongoose.model("userModel", userSchema);

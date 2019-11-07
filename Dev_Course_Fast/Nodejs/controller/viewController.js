@@ -3,7 +3,9 @@ const planModel = require("../model/planModel");
 
 module.exports.login = async (req, res, next) => {
   try {
-    res.status(200).render("Login.pug");
+    res.status(200).render("Login.pug", {
+      title: "Login | OmniFood"
+    });
   } catch (err) {
     res.status(404).json({
       success: "Page Not Found"
@@ -13,7 +15,9 @@ module.exports.login = async (req, res, next) => {
 
 module.exports.signup = async (req, res, next) => {
   try {
-    res.status(200).render("SignUp.pug");
+    res.status(200).render("SignUp.pug", {
+      title: "Sign Up | OmniFood"
+    });
   } catch (err) {
     res.status(404).json({
       success: "Page Not Found"
@@ -24,7 +28,7 @@ module.exports.signup = async (req, res, next) => {
 module.exports.productPage = async (req, res, next) => {
   try {
     res.status(200).render("productPage", {
-      title: "Plan Page"
+      title: "Plan Page | OmniFood"
     });
   } catch (err) {
     res.status(404).json({
@@ -37,7 +41,7 @@ module.exports.allplans = async (req, res, next) => {
   try {
     let plans = await planModel.find();
     res.status(200).render("planContainer", {
-      title: "All Plans",
+      title: "All Plans | OmniFood",
       plans
     });
   } catch (err) {
@@ -47,9 +51,11 @@ module.exports.allplans = async (req, res, next) => {
   }
 };
 
-module.exports.reset = async (req, res, next) => {
+module.exports.resetPassword = async (req, res, next) => {
   try {
-    res.status(200).sendFile("SignUp.html");
+    res.status(200).render("resetPassword.pug", {
+      title: "Reset Password | OmniFood"
+    });
   } catch (err) {
     res.status(404).json({
       success: "Page Not Found"
@@ -59,13 +65,16 @@ module.exports.reset = async (req, res, next) => {
 
 module.exports.forgetPassword = async (req, res, next) => {
   try {
-    res.status(200).sendFile("SignUp.html");
+    res.status(200).render("forgetPassword.pug", {
+      title: "Forget Password | OmniFood"
+    });
   } catch (err) {
     res.status(404).json({
       success: "Page Not Found"
     });
   }
 };
+
 module.exports.userPage = async (req, res, next) => {
   try {
     res.status(200).sendFile("SignUp.html");

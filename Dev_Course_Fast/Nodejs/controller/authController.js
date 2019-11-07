@@ -1,6 +1,7 @@
 const userModel = require("../model/userModel");
 const jwt = require("jsonwebtoken");
 const secret = "mysecret";
+const EmailSender = require("../utils/email");
 
 module.exports.signup = async function(req, res) {
   const user = await userModel.create(req.body);
@@ -12,7 +13,6 @@ module.exports.signup = async function(req, res) {
     token
   });
 };
-
 module.exports.login = async function(req, res, next) {
   try {
     const user = await userModel.find({
@@ -22,7 +22,6 @@ module.exports.login = async function(req, res, next) {
       user[0].password !== undefined &&
       user[0].password === req.body.password
     ) {
-      console.log(req.body);
       res.status(200).redirect("/");
     } else {
       res.status(200).redirect("/login");
@@ -31,7 +30,6 @@ module.exports.login = async function(req, res, next) {
     res.status(200).redirect("/login");
   }
 };
-
 module.exports.protectroute = async function(req, res, next) {
   try {
     if (req.headers.authorization) {
@@ -91,4 +89,91 @@ module.exports.isAuthorised = roles => {
       });
     }
   };
+};
+module.exports.updatePassword = async (req, res, next) => {
+  try {
+    if (req.body.password && req.body.newpassword && req.body.confirmpassword) {
+      if (req.body.oldpassword === req.user.password) {
+        user.password = req.body.newpassword;
+        user.confirmpassword = req.body.newpasswordconfirm;
+        await user.save();
+      } else {
+        res.status(401).json({
+          data: "Password not matched"
+        });
+      }
+    }
+  } catch {
+    res.status.json({
+      data: "Invaild Password"
+    });
+  }
+};
+module.exports.forgetPassword = async function(req, res, next) {
+  try {
+    if (req.body.email) {
+      //1. findOne using email
+      const user = await userModel.findOne({ email: req.body.email });
+      if (user) {
+        //2. add token property to that user
+        const token = user.generateToken();
+        await user.save({ validateBeforeSave: false });
+
+        //3. Sending Email
+        console.log(token === user.token);
+        const options = {
+          to: user.email,
+          subject: "Reset Password | OmniFood",
+          text: `Reset Password: http://localhost:3000/api/user/resetpassword/${token}`,
+          html: `<h1>Reset Password</h1><a href="http://localhost:3000/resetpassword/${token}">Click Here</a>`
+        };
+
+        await EmailSender(options);
+
+        //4. send token to the client
+        console.log(user);
+        res.status(200).redirect("/login");
+      } else {
+        res.status(401).json({
+          data: "User Not Found"
+        });
+      }
+    }
+  } catch {
+    res.status(401).json({
+      data: "Email is Invalid"
+    });
+  }
+};
+module.exports.resetPassword = async (req, res, next) => {
+  try {
+    if (req.body.password && req.body.confirmpassword && req.params["token"]) {
+      if (req.body.password === req.body.confirmpassword) {
+        const user = await userModel.findOne({ token: req.params["token"] });
+
+        if (user) {
+          user.password = req.body.newpassword;
+          user.confirmpassword = req.body.confirmpassword;
+          user.token = undefined;
+          await user.save();
+        } else {
+          res.status(401).json({
+            data: "User is Not Found"
+          });
+        }
+      } else {
+        res.status(401).json({
+          data: "Password not matched"
+        });
+      }
+    } else {
+      res.status(401).json({
+        data: "Invaild Data"
+      });
+    }
+  } catch {
+    res.status.json({
+      data: "Something Went Wrong"
+    });
+  }
 };
