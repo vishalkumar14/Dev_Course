@@ -61,23 +61,20 @@ module.exports.createUser = async (req, res, next) => {
 };
 
 module.exports.updateUser = async (req, res, next) => {
-  userModel.findOneAndUpdate(
-    { _id: { $eq: req.decoded } },
-    req.body,
-    { new: true, upsert: false },
-    function(err, doc) {
-      if (err) {
-        res.status(404).json({
-          success: "Error, ID is Invaild"
-        });
-      } else {
-        res.status(200).json({
-          success: "User is Updated",
-          data: doc
-        });
-      }
-    }
-  );
+  try {
+    const id = req.params.id || req.decoded;
+    const updatedUser = userModel.findByIdAndUpdate(id, req.body, {
+      new: true
+    });
+    return res.status(201).json({
+      data: "User Updated Sucessfully",
+      updatedUser
+    });
+  } catch {
+    return res.status(404).json({
+      data: "User ID is Invalid"
+    });
+  }
 };
 
 module.exports.deleteUser = async (req, res, next) => {

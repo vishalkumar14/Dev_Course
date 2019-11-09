@@ -36,10 +36,14 @@ html(lang='en')
                             a(href='/#steps') How it Works
                         li
                             a(href='/#cities') Out Cities
-                        li
-                            a(href='/signup') Sign Up
-                        li
-                            a(href='/login') Login
+                        if user
+                            li
+                                a(href="/api/user/logout") Logout
+                        else
+                            li
+                                a(href="/signup") Sign Up
+                            li
+                                a(href="/login") Login
                     a.mobile-nav-icon.js--nav-icon
                         i.ion-navicon-round
             .ErrorText
