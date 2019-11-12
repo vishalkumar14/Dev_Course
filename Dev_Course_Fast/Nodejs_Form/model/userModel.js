@@ -41,8 +41,6 @@ const userSchema = new mongoose.Schema({
     required: [true],
     validate: {
       validator: function() {
-        console.log(typeof this.password);
-        console.log(typeof this.confirmpassword);
         return this.password === this.confirmpassword;
       },
       message: "Password does not matched"

@@ -1,9 +1,10 @@
 const userModel = require("../model/userModel");
 const planModel = require("../model/planModel");
+
 module.exports.homePage = async (req, res, next) => {
   try {
     const user = req.user;
-    console.log(user)
+    console.log(user);
     res.status(200).render("home.pug", {
       title: "Home | OmniFood",
       user
@@ -94,7 +95,7 @@ module.exports.forgetPassword = async (req, res, next) => {
 module.exports.userPage = async (req, res, next) => {
   try {
     const user = req.user;
-    res.status(200).render("me.pug", { title: user.name, user });
+    res.status(200).render("userPage.pug", { title: user.name, user });
   } catch (err) {
     res.status(404).json({
       success: "Page Not Found"

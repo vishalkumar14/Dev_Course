@@ -4,71 +4,113 @@ const secret = "mysecret";
 const EmailSender = require("../utils/email");
 
 module.exports.signup = async function(req, res) {
+  // 1. create user
   const user = await userModel.create(req.body);
+  // 2. payload
   const id = user["_id"];
+  //jwt.sign
   const token = await jwt.sign({ id }, secret);
+
+  res.cookie("jwt", token, { httpOnly: true });
+  // console.log(res.cookie);
+
   res.status(201).json({
-    success: "User Created",
+    data: "User Created",
     user,
     token
   });
 };
 module.exports.login = async function(req, res, next) {
   try {
-    const user = await userModel.find({
-      uname: req.body.uname
-    });
-    if (
-      user[0].password !== undefined &&
-      user[0].password === req.body.password
-    ) {
-      res.status(200).redirect("/");
-    } else {
-      res.status(200).redirect("/login");
-    }
-  } catch {
-    res.status(200).redirect("/login");
-  }
-};
-module.exports.protectroute = async function(req, res, next) {
-  try {
-    if (req.headers.authorization) {
-      const userToken = req.headers.authorization.split(" ")[1];
-      const token = await jwt.verify(userToken, secret);
-      if (token) {
-        req.decoded = token["id"];
-        req.user = await userModel.findById(req.decoded);
-        req.roleType = req.user["role"];
-        next();
+    const user = await userModel.findOne({ uname: req.body.uname });
+    if (user) {
+      const dbpassword = user.password;
+      const id = user["_id"];
+
+      if (req.body.password === dbpassword) {
+        const token = await jwt.sign({ id }, secret);
+        res.cookie("jwt", token, { httpOnly: true });
+        
+        return res.status(201).json({
+          success: "User LoggedIn Sucessfuly",
+          token: token,
+          user: user
+        });
       } else {
-        res.status(401).json({
-          data: "Something went Wrong please login again"
+        return res.status(201).json({
+          data: "Please Enter Correct Password or Username"
         });
       }
     } else {
-      res.status(200).redirect("/login");
+      res.status(201).json({
+        data: "User Not Found"
+      });
     }
   } catch {
-    res.status(404).json({
+    res.status(500).json({
+      data: "Something Went Wrong"
+    });
+  }
+};
+module.exports.logout = function(req, res) {
+  res.cookie("jwt", "d,kjbzsdkfbj", {
+    httpOnly: true,
+    expires: new Date(Date.now())
+  });
+  res.redirect("/");
+};
+module.exports.protectroute = async function(req, res, next) {
+  try {
+    const userToken = req.cookies
+      ? req.cookies.jwt
+      : null || req.headers.authorization
+      ? req.headers.authorization.split(" ")[1]
+      : null;
+    if (userToken) {
+      const token = await jwt.verify(`${userToken}`, secret);
+      if (token) {
+        req.decoded = token["id"];
+        req.user = await userModel.findOne({ _id: token.id });
+        req.roleType = req.user["role"];
+        next();
+      } else {
+        return res.status(500).json({
+          data: "Something went Wrong Please Login Again"
+        });
+      }
+    } else {
+      return res.status(401).json({
+        data: "User is Not Logged In"
+      });
+    }
+  } catch {
+    return res.status(404).json({
       data: "Error 404!!!"
     });
   }
 };
 module.exports.isLoggedIn = async function(req, res, next) {
   try {
-    if (req.headers.authorization) {
-      const userToken = req.headers.authorization.split(" ")[1];
-      const token = await jwt.verify(userToken, secret);
-      if (token === true) {
+    const userToken = req.cookies
+      ? req.cookies.jwt
+      : null || req.headers.authorization
+      ? req.headers.authorization.split(" ")[1]
+      : null;
+    if (userToken) {
+      const token = await jwt.verify(`${userToken}`, secret);
+      if (token) {
+        req.decoded = token["id"];
+        req.user = await userModel.findOne({ _id: token.id });
+        req.roleType = req.user["role"];
         next();
       } else {
-        res.status(200).redirect("/login");
+        next();
       }
     } else {
-      res.status(200).redirect("/login");
+      next();
     }
   } catch {
-    res.status(404).json({
+    return res.status(404).json({
       data: "Error 404!!!"
     });
   }
@@ -79,26 +121,29 @@ module.exports.isAuthorised = roles => {
       if (roles.includes(req.roleType)) {
         next();
       } else {
-        res.status(401).json({
+        return res.status(401).json({
           data: "You are not Authorised"
         });
       }
     } catch (err) {
-      res.status(404).json({
-        data: err
+      return res.status(500).json({
+        data: "Something Went Wrong"
       });
     }
   };
 };
 module.exports.updatePassword = async (req, res, next) => {
   try {
-    if (req.body.password && req.body.newpassword && req.body.confirmpassword) {
+    if (req.body.oldpassword && req.body.newpassword && req.body.confirmpassword) {
       if (req.body.oldpassword === req.user.password) {
         user.password = req.body.newpassword;
         user.confirmpassword = req.body.newpasswordconfirm;
         await user.save();
+        return res.status(201).json({
+          data: "Password Updated Sucessfuly"
+        });
       } else {
-        res.status(401).json({
+        return res.status(401).json({
           data: "Password not matched"
         });
       }
@@ -111,7 +156,6 @@ module.exports.updatePassword = async (req, res, next) => {
 };
 module.exports.forgetPassword = async function(req, res, next) {
   try {
-    console.log(req.body);
     if (req.body.email) {
       //1. findOne using email
       const user = await userModel.findOne({ email: req.body.email });
@@ -121,7 +165,6 @@ module.exports.forgetPassword = async function(req, res, next) {
         await user.save({ validateBeforeSave: false });
 
         //3. Sending Email
-        console.log(token === user.token);
         const options = {
           to: user.email,
           subject: "Reset Password | OmniFood",
@@ -132,84 +175,59 @@ module.exports.forgetPassword = async function(req, res, next) {
         await EmailSender(options);
 
         //4. send token to the client
-        console.log(user);
-        res.status(200).redirect("/login");
+        return res.status(201).json({
+          success: "Reset Token has been Send to your Registered Email ID"
+        });
       } else {
-        res.status(401).json({
+        return res.status(401).json({
           data: "User Not Found"
         });
       }
+    } else {
+      return res.status(401).json({
+        data: "Enter Valid Email ID"
+      });
     }
   } catch {
-    res.status(401).json({
-      data: "Email is Invalid"
+    res.status(500).json({
+      data: "Something Went Wrong"
     });
   }
 };
 module.exports.resetPassword = async (req, res, next) => {
   try {
     console.log(req.body);
-    if (req.body.password && req.body.confirmpassword && req.params["token"]) {
+    console.log(req.body["token"]);
+    if (req.body.password && req.body.confirmpassword && req.body["token"]) {
       if (req.body.password === req.body.confirmpassword) {
-        const user = await userModel.findOne({ token: req.params["token"] });
-
+        const user = await userModel.findOne({ token: req.body["token"] });
         if (user) {
-          user.password = req.body.newpassword;
-          user.confirmpassword = req.body.confirmpassword;
-          user.token = undefined;
-          await user.save();
-        } else {
-          res.status(401).json({
-            data: "User is Not Found"
-          });
-        }
-      } else {
-        res.status(401).json({
-          data: "Password not matched"
-        });
-      }
-    } else {
-      res.status(401).json({
-        data: "Invaild Data"
-      });
-    }
-  } catch {
-    res.status.json({
-      data: "Something Went Wrong"
-    });
-  }
-};
-module.exports.resetPasswordForm = async (req, res, next) => {
-  try {
-    console.log(req.body);
-    if (req.body.password && req.body.confirmpassword && req.body.token) {
-      if (req.body.password === req.body.confirmpassword) {
-        const user = await userModel.findOne({ token: req.body.token });
-        console.log(user);
-        if (user) {
+          console.log(user);
           user.password = req.body.password;
           user.confirmpassword = req.body.confirmpassword;
           user.token = undefined;
           await user.save();
-          res.redirect("/login");
+          return res.status(201).json({
+            data: "Password Reset Sucessfuly"
+          });
         } else {
-          res.status(402).json({
+          return res.status(401).json({
             data: "User is Not Found"
           });
         }
       } else {
-        res.status(402).json({
+        return res.status(401).json({
           data: "Password not matched"
         });
       }
     } else {
-      res.status(402).json({
+      return res.status(401).json({
         data: "Invaild Data"
       });
     }
   } catch (err) {
     console.log(err);
-    res.status(402).json({
+    return res.status(401).json({
       data: "Something Went Wrong"
     });
   }

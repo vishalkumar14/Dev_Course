@@ -30,7 +30,7 @@ module.exports.login = async function(req, res, next) {
       if (req.body.password === dbpassword) {
         const token = await jwt.sign({ id }, secret);
         res.cookie("jwt", token, { httpOnly: true });
-
+        
         return res.status(201).json({
           success: "User LoggedIn Sucessfuly",
           token: token,
@@ -134,7 +134,7 @@ module.exports.isAuthorised = roles => {
 };
 module.exports.updatePassword = async (req, res, next) => {
   try {
-    if (req.body.password && req.body.newpassword && req.body.confirmpassword) {
+    if (req.body.oldpassword && req.body.newpassword && req.body.confirmpassword) {
       if (req.body.oldpassword === req.user.password) {
         user.password = req.body.newpassword;
         user.confirmpassword = req.body.newpasswordconfirm;

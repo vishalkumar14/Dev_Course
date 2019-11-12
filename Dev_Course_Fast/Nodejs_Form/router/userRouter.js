@@ -17,17 +17,16 @@ const {
   updatePassword,
   forgetPassword,
   resetPassword,
-  resetPasswordForm,
-  checkUser
+  isLoggedIn,
+  logout
 } = require("../controller/authController");
 
 userRouter.route("/signup").post(signup);
 userRouter.route("/login").post(login);
+userRouter.route("/logout").get(logout);
 
-// userRouter.route("/resetpassword/:token").patch(resetPassword);
-// userRouter.route("/resetpassword/:token").post(resetPassword);
-userRouter.route("/resetpassword").patch(resetPasswordForm);
-userRouter.route("/resetpassword").post(resetPasswordForm);
+userRouter.route("/resetpassword").patch(resetPassword);
+userRouter.route("/resetpassword").post(resetPassword);
 
 userRouter.route("/forgetpassword").patch(forgetPassword);
 userRouter.route("/forgetpassword").post(forgetPassword);

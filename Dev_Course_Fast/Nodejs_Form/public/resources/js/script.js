@@ -72,4 +72,24 @@ $(document).ready(function() {
       icon.removeClass("ion-close-round");
     }
   });
+
+  $(".options-user").addClass("noshow");
+  $(".options-info").removeClass("noshow");
+
+  $(".option").click(function(event) {
+    const option = $(event.target);
+    $(".options-user").addClass("noshow");
+
+    if (option.hasClass("info")) {
+      $(".options-info").removeClass("noshow");
+    } else if (option.hasClass("orders")) {
+      $(".options-orders").removeClass("noshow");
+    } else if (option.hasClass("address")) {
+      $(".options-address").removeClass("noshow");
+    } else if (option.hasClass("updatepassword")) {
+      $(".options-updatepassword").removeClass("noshow");
+    } else if (option.hasClass("addplan")) {
+      $(".options-addplan").removeClass("noshow");
+    }
+  });
 });

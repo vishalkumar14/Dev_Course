@@ -30,7 +30,7 @@ const planSchema = new mongoose.Schema({
   price: { type: Number, min: 1, default: 0, required: true },
   mealFreq: { type: String, required: true, minlength: 6 },
   OrderType: { type: String, required: true, minlength: 10 },
-  access: { type: Boolean, default: false, require: true }
+  access: { type: String, require: true, minlength: 6 }
 });
 
 const planModel = mongoose.model("planModel", planSchema);

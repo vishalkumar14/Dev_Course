@@ -3,8 +3,11 @@ const express = require("express");
 // Body Parser is used for parsing the req url and simplfying the body parameters values and params value 
 // in a easy to handle manner
 const bodyParser = require("body-parser");
-// 
 const cookieParser = require("cookie-parser");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
+
 const app = express();
 
 const userRouter = require("./router/userRouter");

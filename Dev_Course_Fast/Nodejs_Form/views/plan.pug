@@ -20,7 +20,7 @@
                     i.ion-ios-checkmark-empty.icon-small 
                     | #{plan.OrderType}
 
-                if plan.access
+                if plan.access === "Yes"
                     li
                         i.ion-ios-checkmark-empty.icon-small 
                         | Access to newest creations
@@ -34,3 +34,4 @@
 
         div
             a.btn.btn-full(href="/productPage") Details
+
