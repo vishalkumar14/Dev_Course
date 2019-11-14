@@ -4,7 +4,7 @@ block mainBlock
         .row
             h2 Login
         .row
-            form.login-form(method='POST' action='/api/user/login')
+            form.login-form
                 .row.login-field
                     .col.span-3-of-3
                         label(for='uname') Username
@@ -28,5 +28,5 @@ block mainBlock
                         input(type='submit' value='Login')
                 .row.login-field
                     .col.span-1-of-2
-                       span Don't have an acount? 
-                       a(href="/signup") &nbsp; SignUp 
+                        span Don't have an acount? 
+                        a(href="/signup") &nbsp; SignUp 

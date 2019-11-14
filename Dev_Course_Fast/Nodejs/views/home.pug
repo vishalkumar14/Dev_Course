@@ -5,31 +5,31 @@ html(lang='en')
         meta(charset='UTF-8')
         meta(name='viewport' content='width=device-width, initial-scale=1.0')
         meta(http-equiv='X-UA-Compatible' content='ie=edge')
-        link(rel='stylesheet' href='./vendors/css/normalize.css')
-        link(rel='stylesheet' href='./vendors/css/grid.css')
-        link(rel='stylesheet' href='./vendors/css/ionicons.min.css')
-        link(rel='stylesheet' href='./vendors/css/animate.css')
-        link(rel='stylesheet' href='./resources/css/style.css')
-        link(rel='stylesheet' href='./resources/css/queries.css')
+        link(rel='stylesheet' href='/vendors/css/normalize.css')
+        link(rel='stylesheet' href='/vendors/css/grid.css')
+        link(rel='stylesheet' href='/vendors/css/ionicons.min.css')
+        link(rel='stylesheet' href='/vendors/css/animate.css')
+        link(rel='stylesheet' href='/resources/css/style.css')
+        link(rel='stylesheet' href='/resources/css/queries.css')
         link(href='https://fonts.googleapis.com/css?family=Lato:100,300,300i,400&display=swap' rel='stylesheet')
         title OmniFood
-        link(rel='apple-touch-icon' sizes='180x180' href='./resources/favicons/apple-touch-icon.png')
-        link(rel='icon' type='image/png' sizes='16x16' href='./resources/favicons/favicon-16x16.png')
-        link(rel='icon' type='image/png' sizes='32x32' href='./resources/favicons/favicon-32x32.png')
-        link(rel='manifest' href='./resources/favicons/site.webmanifest')
-        link(rel='mask-icon' href='./resources/favicons/safari-pinned-tab.svg' color='#3e3f3f')
-        link(rel='shortcut icon' href='./resources/favicons/favicon.ico')
+        link(rel='apple-touch-icon' sizes='180x180' href='/resources/favicons/apple-touch-icon.png')
+        link(rel='icon' type='image/png' sizes='16x16' href='/resources/favicons/favicon-16x16.png')
+        link(rel='icon' type='image/png' sizes='32x32' href='/resources/favicons/favicon-32x32.png')
+        link(rel='manifest' href='/resources/favicons/site.webmanifest')
+        link(rel='mask-icon' href='/resources/favicons/safari-pinned-tab.svg' color='#3e3f3f')
+        link(rel='shortcut icon' href='/resources/favicons/favicon.ico')
         meta(name='msapplication-TileColor' content='#ffffff')
-        meta(name='msapplication-config' content='./resources/favicons/browserconfig.xml')
+        meta(name='msapplication-config' content='/resources/favicons/browserconfig.xml')
         meta(name='theme-color' content='#ffffff')
     body
         header#main-home
             nav
                 .row
                     a(href='/#main-home')
-                        img.logo(src='./Omnifood Contents/logo-white.png' alt='OmniFood Logo')
+                        img.logo(src='/Omnifood Contents/logo-white.png' alt='OmniFood Logo')
                     a(href='/#main-home')
-                        img.logo-black(src='./Omnifood Contents/logo.png' alt='OmniFood Logo')
+                        img.logo-black(src='/Omnifood Contents/logo.png' alt='OmniFood Logo')
                     ul.main-nav.js--main-nav
                         li
                             a(href="/#feature") Food Delivery
@@ -39,7 +39,7 @@ html(lang='en')
                             a(href="/#cities") Out Cities
                         if user
                             li
-                                a(href="/api/user/logout") Logout
+                                a(href="/userPage") Profile
                         else
                             li
                                 a(href="/signup") Sign Up
@@ -94,35 +94,35 @@ html(lang='en')
             ul.meals-showcase.clearfix
                 li
                     figure.meal-photo
-                        img(src='./resources/img/1.jpg' alt='Food Images')
+                        img(src='/resources/img/1.jpg' alt='Food Images')
                 li
                     figure.meal-photo
-                        img(src='./resources/img/2.jpg' alt='Food Images')
+                        img(src='/resources/img/2.jpg' alt='Food Images')
                 li
                     figure.meal-photo
-                        img(src='./resources/img/3.jpg' alt='Food Images')
+                        img(src='/resources/img/3.jpg' alt='Food Images')
                 li
                     figure.meal-photo
-                        img(src='./resources/img/4.jpg' alt='Food Images')
+                        img(src='/resources/img/4.jpg' alt='Food Images')
             ul.meals-showcase.clearfix
                 li
                     figure.meal-photo
-                        img(src='./resources/img/5.jpg' alt='Food Images')
+                        img(src='/resources/img/5.jpg' alt='Food Images')
                 li
                     figure.meal-photo
-                        img(src='./resources/img/6.jpg' alt='Food Images')
+                        img(src='/resources/img/6.jpg' alt='Food Images')
                 li
                     figure.meal-photo
-                        img(src='./resources/img/7.jpg' alt='Food Images')
+                        img(src='/resources/img/7.jpg' alt='Food Images')
                 li
                     figure.meal-photo
-                        img(src='./resources/img/8.jpg' alt='Food Images')
+                        img(src='/resources/img/8.jpg' alt='Food Images')
         section#steps.section-steps
             .row
                 h2 How it Works — Simple as 1, 2, 3
             .row
                 .col.span-1-of-2.steps-box
-                    img.app-screen.js--wp-2(src='./resources/img/app-iPhone.png' alt='Omnifood App on IPhone')
+                    img.app-screen.js--wp-2(src='/resources/img/app-iPhone.png' alt='Omnifood App on IPhone')
                 .col.span-1-of-2.steps-box
                     .works-step
                         div 1
@@ -139,15 +139,15 @@ html(lang='en')
                         p
                             | Enjoy your meal after less than 20 minutes. See you the next time!
                     a.btn-app(href='#')
-                        img(src='./resources/img/download-app.svg' alt='App Store Link')
+                        img(src='/resources/img/download-app.svg' alt='App Store Link')
                     a.btn-app(href='#')
-                        img(src='./resources/img/download-app-android.png' alt='Play Store Link')
+                        img(src='/resources/img/download-app-android.png' alt='Play Store Link')
         section#cities.section-cities
             .row
                 h2 We're currently in these cities
             .row.js--wp-3
                 .col.span-1-of-4.box
-                    img(src='./resources/img/lisbon-3.jpg' alt='Lisbon')
+                    img(src='/resources/img/lisbon-3.jpg' alt='Lisbon')
                     h3 Lisbon
                     .city-feature
                         i.ion-ios-person.icon-small
@@ -159,7 +159,7 @@ html(lang='en')
                         i.ion-social-twitter.icon-small
                         a(href='#')  @omnifood_lx
                 .col.span-1-of-4.box
-                    img(src='./resources/img/san-francisco.jpg' alt='San Francisco')
+                    img(src='/resources/img/san-francisco.jpg' alt='San Francisco')
                     h3 San Francisco
                     .city-feature
                         i.ion-ios-person.icon-small
@@ -171,7 +171,7 @@ html(lang='en')
                         i.ion-social-twitter.icon-small
                         a(href='#')  @omnifood_sf
                 .col.span-1-of-4.box
-                    img(src='./resources/img/berlin.jpg' alt='Berlin')
+                    img(src='/resources/img/berlin.jpg' alt='Berlin')
                     h3 Berlin
                     .city-feature
                         i.ion-ios-person.icon-small
@@ -183,7 +183,7 @@ html(lang='en')
                         i.ion-social-twitter.icon-small
                         a(href='#')  @omnifood_berlin
                 .col.span-1-of-4.box
-                    img(src='./resources/img/london.jpg' alt='London')
+                    img(src='/resources/img/london.jpg' alt='London')
                     h3 London
                     .city-feature
                         i.ion-ios-person.icon-small
@@ -204,7 +204,7 @@ html(lang='en')
                         | with no time for cooking, so Omnifood is a life-saver. Now that I
                         | got used to it, I couldn't live without my daily meals!
                         cite
-                            img(src='./resources/img/customer-1.jpg' alt='Random People Image')
+                            img(src='/resources/img/customer-1.jpg' alt='Random People Image')
                             | Vishal Kumar
                 .col.span-1-of-3
                     blockquote
@@ -212,7 +212,7 @@ html(lang='en')
                         | home. We have lots of food delivery here in Lisbon, but no one comes
                         | even close to Omifood. Me and my family are so in love!
                         cite
-                            img(src='./resources/img/customer-2.jpg' alt='Random People Image')
+                            img(src='/resources/img/customer-2.jpg' alt='Random People Image')
                             | Sara
                 .col.span-1-of-3
                     blockquote
@@ -220,7 +220,7 @@ html(lang='en')
                         | Franciso. I tried a lot of them and ended up with Omnifood. Best
                         | food delivery service in the Bay Area. Keep up the great work!
                         cite
-                            img(src='./resources/img/customer-3.jpg' alt='Random People Image')
+                            img(src='/resources/img/customer-3.jpg' alt='Random People Image')
                             | ShahRukh
         section#plans.section-plans
             .row
@@ -279,7 +279,7 @@ html(lang='en')
                                     | Free
                                     |                   Delivery
                         div
-                            a.btn.btn-empty(href='login') Sign Up Now
+                            a.btn.btn-empty(href='/login') Sign Up Now
                 .col.span-1-of-3
                     .plan-box
                         div
@@ -380,5 +380,9 @@ html(lang='en')
         script(src='https://cdn.jsdelivr.net/respond/1.4.2/respond.min.js')
         script(src='https://cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js')
         script(src='https://cdn.jsdelivr.net/selectivizr/1.0.3b/selectivizr.min.js')
-        script(src='./resources/js/script.js')
-        script(src='./vendors/js/jquery.waypoints.min.js')
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js')
+        script(src="https://js.stripe.com/v3/")
+        script(src='/vendors/js/jquery.waypoints.min.js')
+        script(src='/resources/js/ImageUpload.js')
+        script(src='/resources/js/script.js')
+        script(src='/resources/js/login.js')

@@ -20,8 +20,7 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Name is Required"],
-    maxlength: 40,
-    unique: true
+    maxlength: 40
   },
   role: {
     type: String,
@@ -46,7 +45,9 @@ const userSchema = new mongoose.Schema({
       message: "Password does not matched"
     }
   },
-  token: { type: String }
+  token: { type: String },
+  address: { type: String },
+  orderid: { type: String}
 });
 
 userSchema.pre("save", function() {

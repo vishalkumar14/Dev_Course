@@ -1,10 +1,10 @@
 const userModel = require("../model/userModel");
 const planModel = require("../model/planModel");
+const bookingModel = require("../model/bookingModel");
 
 module.exports.homePage = async (req, res, next) => {
   try {
     const user = req.user;
-    console.log(user);
     res.status(200).render("home.pug", {
       title: "Home | OmniFood",
       user
@@ -42,10 +42,22 @@ module.exports.signup = async (req, res, next) => {
 
 module.exports.productPage = async (req, res, next) => {
   try {
-    res.status(200).render("productPage", {
-      title: "Plan Page | OmniFood"
-    });
+    const user = req.user;
+    const plan = await planModel.findById(req.params["id"]);
+    if (plan) {
+      res.status(200).render("productPage", {
+        title: "Plan Page | OmniFood",
+        user: user,
+        plan: plan
+      });
+    } else {
+      res.status(200).render("productPage", {
+        title: "Plan Page | OmniFood",
+        user
+      });
+    }
   } catch (err) {
+    console.log(err);
     res.status(404).json({
       success: "Page Not Found"
     });
@@ -95,11 +107,15 @@ module.exports.forgetPassword = async (req, res, next) => {
 module.exports.userPage = async (req, res, next) => {
   try {
     const user = req.user;
-    res.status(200).render("userPage.pug", { title: user.name, user });
-  } catch (err) {
-    res.status(404).json({
-      success: "Page Not Found"
-    });
+    let userOrders = [];
+    if (user.orderid !== undefined) {
+      const Orders = await bookingModel.findById(user.orderid);
+      userOrders = Orders.orders;
+    }
+    res.status(200).render("userPage.pug", { title: user.name, user, userOrders });
+  } 
+  catch (err) {
+    res.status(404).json({ success: "Page Not Found" });
   }
 };
 

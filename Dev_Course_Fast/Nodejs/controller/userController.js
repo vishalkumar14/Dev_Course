@@ -62,26 +62,22 @@ module.exports.createUser = async (req, res, next) => {
 
 module.exports.updateUser = async (req, res, next) => {
   try {
-    const id = req.params.id || req.decoded;
-    const updatedUser = userModel.findByIdAndUpdate(id, req.body, {
+    const id = req.params.id || req.decoded || req.body["_id"];
+    const updatedUser = await userModel.findByIdAndUpdate(id, req.body, {
       new: true
     });
     return res.status(201).json({
-      data: "User Updated Sucessfully",
-      updatedUser
+      success: "User Updated Sucessfully"
     });
-  } catch {
-    return res.status(404).json({
+  } catch (err) {
+    return res.status(403).json({
       data: "User ID is Invalid"
     });
   }
 };
 
 module.exports.deleteUser = async (req, res, next) => {
-  userModel.findOneAndDelete({ _id: { $eq: req.params["id"] } }, function(
-    err,
-    doc
-  ) {
+  userModel.findOneAndDelete({ _id: { $eq: req.params["id"] } }, function(err, doc) {
     if (err) {
       res.status(404).json({
         success: "Error, ID is Invaild"
@@ -94,3 +90,5 @@ module.exports.deleteUser = async (req, res, next) => {
     }
   });
 };
+
+module.exports.uploadimage = async (req, res, next) => {};

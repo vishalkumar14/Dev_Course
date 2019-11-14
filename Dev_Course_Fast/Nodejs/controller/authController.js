@@ -4,21 +4,28 @@ const secret = "mysecret";
 const EmailSender = require("../utils/email");
 
 module.exports.signup = async function(req, res) {
-  // 1. create user
-  const user = await userModel.create(req.body);
-  // 2. payload
-  const id = user["_id"];
-  //jwt.sign
-  const token = await jwt.sign({ id }, secret);
+  try {
+    // 1. create user
+    const user = await userModel.create(req.body);
+    // 2. payload
+    const id = user["_id"];
 
-  res.cookie("jwt", token, { httpOnly: true });
-  // console.log(res.cookie);
+    //jwt.sign
+    const token = await jwt.sign({ id }, secret);
+    res.cookie("jwt", token, { httpOnly: true });
 
-  res.status(201).json({
-    data: "User Created",
-    user,
-    token
-  });
+    // console.log(res.cookie);
+    return res.status(201).json({
+      success: "User Created",
+      token,
+      user
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      failure: "Something Went Wrong"
+    });
+  }
 };
 module.exports.login = async function(req, res, next) {
   try {
@@ -26,29 +33,26 @@ module.exports.login = async function(req, res, next) {
     if (user) {
       const dbpassword = user.password;
       const id = user["_id"];
-
       if (req.body.password === dbpassword) {
         const token = await jwt.sign({ id }, secret);
         res.cookie("jwt", token, { httpOnly: true });
-        
         return res.status(201).json({
           success: "User LoggedIn Sucessfuly",
-          token: token,
           user: user
         });
       } else {
         return res.status(201).json({
-          data: "Please Enter Correct Password or Username"
+          failure: "Please Enter Correct Password or Username"
         });
       }
     } else {
-      res.status(201).json({
-        data: "User Not Found"
+      return res.status(201).json({
+        failure: "User Not Found"
       });
     }
   } catch {
-    res.status(500).json({
-      data: "Something Went Wrong"
+    return res.status(500).json({
+      failure: "Something Went Wrong"
     });
   }
 };
@@ -135,22 +139,23 @@ module.exports.isAuthorised = roles => {
 module.exports.updatePassword = async (req, res, next) => {
   try {
     if (req.body.oldpassword && req.body.newpassword && req.body.confirmpassword) {
-      if (req.body.oldpassword === req.user.password) {
+      const user = req.user;
+      if (req.body.oldpassword === user.password) {
         user.password = req.body.newpassword;
-        user.confirmpassword = req.body.newpasswordconfirm;
+        user.confirmpassword = req.body.confirmpassword;
         await user.save();
         return res.status(201).json({
-          data: "Password Updated Sucessfuly"
+          success: "Password Updated Sucessfuly"
         });
       } else {
-        return res.status(401).json({
-          data: "Password not matched"
+        return res.status(402).json({
+          failure: "Password not matched"
         });
       }
     }
-  } catch {
-    res.status.json({
-      data: "Invaild Password"
+  } catch (err) {
+    return res.status(403).json({
+      failure: "Invaild Password"
     });
   }
 };
@@ -196,8 +201,6 @@ module.exports.forgetPassword = async function(req, res, next) {
 };
 module.exports.resetPassword = async (req, res, next) => {
   try {
-    console.log(req.body);
-    console.log(req.body["token"]);
     if (req.body.password && req.body.confirmpassword && req.body["token"]) {
       if (req.body.password === req.body.confirmpassword) {
         const user = await userModel.findOne({ token: req.body["token"] });
@@ -208,7 +211,7 @@ module.exports.resetPassword = async (req, res, next) => {
           user.token = undefined;
           await user.save();
           return res.status(201).json({
-            data: "Password Reset Sucessfuly"
+            success: "Password Reset Sucessfuly"
           });
         } else {
           return res.status(401).json({
@@ -226,7 +229,6 @@ module.exports.resetPassword = async (req, res, next) => {
       });
     }
   } catch (err) {
-    console.log(err);
     return res.status(401).json({
       data: "Something Went Wrong"
     });

@@ -1,12 +1,12 @@
 const planModel = require("../model/planModel");
 
 module.exports.addqueryParams = async (req, res, next) => {
-  req.query.sort = '-averagerating';
-  req.query.limit = '5';
-  req.query.price =  { gt: '300' };
-  req.query.select="name%price%averagerating";
+  req.query.sort = "-averagerating";
+  req.query.limit = "5";
+  req.query.price = { gt: "300" };
+  req.query.select = "name%price%averagerating";
   next();
-}
+};
 
 module.exports.getAllPlans = async (req, res, next) => {
   try {
@@ -67,7 +67,7 @@ module.exports.getPlan = async (req, res, next) => {
     const plan = await planModel.findById(req.params["id"]);
     res.status(200).json({
       success: "Get Plan",
-      data: plan
+      plan
     });
   } catch (err) {
     res.status(401).json({
@@ -79,41 +79,20 @@ module.exports.getPlan = async (req, res, next) => {
 
 module.exports.createPlan = async (req, res, next) => {
   try {
+    console.log(req.body);
     const plan = await planModel.create(req.body);
-    res.status(200).json({
-      success: "A Plan is Created",
-      data: plan
+    return res.status(200).json({
+      success: "A Plan is Created"
     });
   } catch (err) {
-    res.status(401).json({
-      success: "Plan Could not be Created",
-      data: err
+    return res.status(401).json({
+      failure: "Plan Could not be Created"
     });
   }
 };
 
 module.exports.updatePlan = async (req, res, next) => {
-  planModel.findOneAndUpdate(
-    { _id: { $eq: req.params["id"] } },
-    req.body,
-    { new: true, upsert: false },
-    function(err, doc) {
-      if (err) {
-        res.status(404).json({
-          success: "Error, ID is Invaild"
-        });
-      } else {
-        res.status(200).json({
-          success: "A Plan is Updated or Created",
-          data: doc
-        });
-      }
-    }
-  );
-};
-
-module.exports.deletePlan = async (req, res, next) => {
-  planModel.findOneAndDelete({ _id: { $eq: req.params["id"] } }, function(
+  planModel.findOneAndUpdate({ _id: { $eq: req.params["id"] } }, req.body, { new: true, upsert: false }, function(
     err,
     doc
   ) {
@@ -123,9 +102,23 @@ module.exports.deletePlan = async (req, res, next) => {
       });
     } else {
       res.status(200).json({
-        success: "A Plan is Removed",
+        success: "A Plan is Updated or Created",
         data: doc
       });
     }
   });
+};
+
+module.exports.deletePlan = async (req, res, next) => {
+  try {
+    await planModel.findOneAndDelete({ _id: { $eq: req.params["id"] } }, function(err, doc) {
+      return res.status(201).json({
+        success: "A Plan is Removed"
+      });
+    });
+  } catch (err) {
+    return res.status(403).json({
+      failure: "Error, ID is Invaild"
+    });
+  }
 };

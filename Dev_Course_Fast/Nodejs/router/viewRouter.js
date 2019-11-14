@@ -20,7 +20,7 @@ viewRouter.route("").get(homePage);
 viewRouter.route("/login").get(login);
 viewRouter.route("/signup").get(signup);
 
-viewRouter.route("/productPage").get(protectroute, productPage);
+viewRouter.route("/productPage/:id").get(protectroute, productPage);
 
 viewRouter.route("/allplans").get(allplans);
 

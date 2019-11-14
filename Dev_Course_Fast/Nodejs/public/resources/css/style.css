@@ -248,6 +248,7 @@ header .logo-black {
 /* Main Navigation */
 
 .navbar {
+  position: -webkit-sticky;
   position: sticky;
 }
 
@@ -716,6 +717,7 @@ footer p {
 input[type="text"],
 input[type="email"],
 input[type="password"],
+input[type="number"],
 select,
 textarea {
   width: 100%;
@@ -753,7 +755,11 @@ textarea {
 }
 
 .forgetRemember {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between;
 }
 
@@ -765,6 +771,7 @@ textarea {
 /* <-------------------------- Product Home Section --------------------------> */
 
 .product-home {
+  -webkit-clip-path: polygon(0 0, 100% 0%, 100% 82%, 0% 100%);
   clip-path: polygon(0 0, 100% 0%, 100% 82%, 0% 100%);
 }
 
@@ -790,7 +797,11 @@ product-background {
 }
 
 .ProductText {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between;
 }
 
@@ -799,6 +810,8 @@ product-background {
 }
 
 .aboutPlan {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
 }
 
@@ -808,7 +821,12 @@ product-background {
 }
 
 .FeaturesText {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
 }
 
@@ -903,26 +921,73 @@ product-background {
   text-align: center;
 }
 
+.userName {
+  font-size: 215%;
+  color: #fff;
+  font-weight: 400;
+  word-spacing: 4px;
+  letter-spacing: 2.5px;
+}
+
+.logoutDiv a:link,
+.logoutDiv a:visited {
+  font-size: 130%;
+  border: none;
+  color: #2ecc71;
+}
+.logoutDiv a:hover,
+.logoutDiv a:active {
+  font-size: 130%;
+  color: #27ae60;
+  border: none;
+}
+
+.profilePic-Container {
+  margin-bottom: 10%;
+}
+
 #profilePic {
   width: 150px;
   height: 150px;
   border-radius: 50%;
+  -webkit-transition: all 0.2s;
   transition: all 0.2s;
 }
 
 #ImageFormContainer {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   color: #fff;
+  text-align: center;
   visibility: hidden;
   z-index: -1;
+}
+
+@-webkit-keyframes moveInBottom {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate(-50%, -30%);
+    transform: translate(-50%, -30%);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
 }
 
 @keyframes moveInBottom {
   0% {
     opacity: 0;
+    -webkit-transform: translate(-50%, -30%);
     transform: translate(-50%, -30%);
   }
   100% {
     opacity: 1;
+    -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
   }
 }
@@ -933,6 +998,7 @@ product-background {
 }
 
 #profilePic:hover {
+  -webkit-filter: blur(1.5px);
   filter: blur(1.5px);
 }
 
@@ -942,7 +1008,11 @@ product-background {
 
 .userOption {
   padding: 4% 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between;
 }
 .userOption .option,
@@ -981,6 +1051,6 @@ product-background {
   z-index: -1;
 }
 
-.icon-upload{
+.icon-upload {
   font-size: 200%;
 }
